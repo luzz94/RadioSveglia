@@ -9,19 +9,19 @@ void stopWakeUp ()
   randNumber = 0;
   menu = 0;
  }
- 
+
 }
 
 void clockManage()
 {
- int a = swLongOrShort();  
+ int a = swLongOrShort();
  if(a == 2)                 // se longTouch su swMain allora entro nel menu principale
  {
   refreshDisplay = true;   // aggiorno il display
   display.clearDisplay();
   menu = 1;              // passo al menu 1
  }
- 
+
 }
 
 void mainMenuManage()
@@ -35,13 +35,13 @@ void mainMenuManage()
   if(b == 1)
   {
     index++;
-    if(index == 3) index = 0;  
+    if(index == 3) index = 0;
   }
 
   if(b == -1)
   {
     index--;
-    if(index == -1) index = 2;  
+    if(index == -1) index = 2;
   }
   if(a == 1)
   {
@@ -51,7 +51,7 @@ void mainMenuManage()
       refreshDisplay = true;
       radio.setVolume(volume);
       menu = 3;
-      display.clearDisplay(); 
+      display.clearDisplay();
     }
     if(index == 1)
     {
@@ -69,8 +69,8 @@ void mainMenuManage()
     }
   }
   if (a == 2)
-  { 
-    index = 0;  
+  {
+    index = 0;
     refreshDisplay = true;
     analogWrite(blPin, 0);
     menu = 0;
@@ -81,27 +81,27 @@ void snoozeManage()
 {
   int a = swLongOrShort();
   int b = rotary();
-  
+
   if(b == 1)
   {
     index++;
-    if(index == 4) index = 0;  
+    if(index == 4) index = 0;
   }
 
   if(b == -1)
   {
     index--;
-    if(index == -1) index = 3;  
+    if(index == -1) index = 3;
   }
-  
+
   if(a == 1)
   {
     dataModify();
     }
-  
+
   if (a == 2)
-  { 
-    index = 0;  
+  {
+    index = 0;
     refreshDisplay = true;
     analogWrite(blPin, 0);
     menu = 0;
@@ -112,7 +112,7 @@ void radioManage() // metodo usato nel menù radio, controlla lo stato dell'enco
 {
   int a = rotary();
   int b = swLongOrShort();
-  
+
   if (b == 2 && (millis()-timeToRot) > 3000) // se è longpress e non ho girato l'encoder
   {
     refreshDisplay = true; // devo aggiornare il display
@@ -136,7 +136,7 @@ void radioManage() // metodo usato nel menù radio, controlla lo stato dell'enco
   }
   else
   {
-    if (a == 1) radio.seekUp();      // se invece non sto premendo lo swMain e sto girando l'encoder, allora 
+    if (a == 1) radio.seekUp();      // se invece non sto premendo lo swMain e sto girando l'encoder, allora
     if (a == -1) radio.seekDown();  // sinistra stazione giu, destra, stazione sopra
   }
 }
@@ -145,32 +145,44 @@ void dateHourManage()
 {
   int a = swLongOrShort();
   int b = rotary();
-  
+
   if(b == 1)
   {
     index++;
-    if(index == 6) index = 0;  
+    if(index == 6) index = 0;
   }
 
   if(b == -1)
   {
     index--;
-    if(index == -1) index = 5;  
+    if(index == -1) index = 5;
   }
-  
+
   if(a == 1)
   {
     if(index == 0)
     {
-      
+
     }
     if(index == 1)
     {
-     
+      /**
+        * Se non sbaglio questo è l'indice del cursore per le ore
+        *
+        * Appena rilevi una rotazione del potenziometro incrementi o decrementi
+        * la variabile oraSveglia
+        * (ovviamente ci vanno dei controlli per non superare 23 e scendere sotto lo 0)
+        */
     }
     if(index == 2)
     {
-
+      /**
+        * Se non sbaglio questo è l'indice del cursore per i minuti
+        *
+        * Appena rilevi una rotazione del potenziometro incrementi o decrementi
+        * la variabile minutiSveglia
+        * (ovviamente ci vanno dei controlli per non superare 59 e scendere sotto lo 0)
+        */
     }
     if(index == 3)
     {
@@ -184,10 +196,15 @@ void dateHourManage()
     {
 
     }
+    /**
+      * Appena hai finito di modificare l'ora e i minuti ed esci dal menu'
+      * chiami la funzione che ti scrive i dati oraSveglia e minutiSveglia
+      * nella PROGMEM così le modifiche persistono anche dopo lo spegnimento
+      */
   }
   if (a == 2)
-  { 
-    index = 0;  
+  {
+    index = 0;
     refreshDisplay = true;
     analogWrite(blPin, 0);
     menu = 0;
@@ -199,4 +216,3 @@ void dataModify()
  int a = swLongOrShort();
  if(a == 1) return;
   }
-
