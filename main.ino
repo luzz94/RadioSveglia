@@ -33,24 +33,29 @@ int minOld = 0;
 char buffer[10];
 
 unsigned long timeToPush = 0;      // variabile per tenere conto del tempo tra una premuta e un altra
-unsigned long timeToRot = 0;     // variabile per tenere conto del tempo tra una rotazione e un altra
+unsigned long timeToRot = 0;       // variabile per tenere conto del tempo tra una rotazione e un altra
 unsigned long startRotaryUp = 0;
 unsigned long startRotaryDown = 0;
-unsigned int durationUp = 0;  // usate nel rotary, durata dell'impulso
+unsigned int durationUp = 0;       // usate nel rotary, durata dell'impulso
 unsigned int durationDown = 0;
 unsigned long startPushMain = 0;
 String ora = "";
 String data = "";
 String message = "";
 
-boolean puntino = true;   // per il lampeggio del puntino dell'orologio
-boolean isTouch = true; // tiene conto se il rotarySW è stato toccato - per sapere se pressione lunga/corta
-boolean refreshDisplay = true; // tiene conto se il rotarySW è stato toccato - per aggiornare il display
-boolean pushState = false; // tiene conto se lo switch del rotary è stato premuto
+boolean puntino = true;           // per il lampeggio del puntino dell'orologio
+boolean isTouch = true;           // tiene conto se il rotarySW è stato toccato - per sapere se pressione lunga/corta
+boolean refreshDisplay = true;    // tiene conto se il rotarySW è stato toccato - per aggiornare il display
+boolean pushState = false;        // tiene conto se lo switch del rotary è stato premuto
 boolean pushStateUp = false;
 boolean pushStateDown = false;
 boolean bkLight = true;
 boolean changeMinute = true;
+
+/**
+  * Aggiugi delle variabili per l'ora della sveglia (che non mi sembrano esserci),
+  * la frequenza che vuoi come radio, e il volume. Salvale nella "PROGMEM"
+  */
 
 
 const PROGMEM char day_1[]  = "Domenica";
@@ -132,7 +137,7 @@ void loop()
     refreshDisplay = false;
     }
     stopWakeUp();
-    
+
   }
 
   while (menu == 0)  // orologio
@@ -155,7 +160,7 @@ void loop()
       display.display();
       refreshDisplay = false;
       changeMinute = false;
-   
+
     }
 
     if (!puntino)display.fillRect(40, 8, 5, 10, WHITE); // cancello il puntino
@@ -198,6 +203,13 @@ void loop()
       writeWord(BLACK, 1, 0, 6, "Ora");
       writeWord(BLACK, 1, 0, 20, "FM");
       writeWord(BLACK, 1, 0, 34, "Volume");
+      /**
+        * Qui al posto della stringa "06:00" usi "oraSveglia.toString() + minutiSveglia.toString();"
+        * con oraSveglia e minutiSveglia le variabili nella PROGMEM che indicano
+        * l'ora e i minuti a cui la sveglia deve suonare.
+        *
+        * Stesso discorso lo fai per la frequenza della radio e il volume della sveglia
+        */
       writeWord(BLACK, 1, 44, 6, "06:00");
       writeWord(BLACK, 1, 44, 20, "95.00");
       writeWord(BLACK, 1, 44, 34, "15");
@@ -252,7 +264,3 @@ void loop()
   }
 
 }
-
-
-
-
